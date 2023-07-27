@@ -4,7 +4,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 // Redux Actions
 
-import { getTasks, getTaskListName } from "@/selectors/taskSelectors";
+import {
+  getTasks,
+  getTaskListName,
+  getTaskWithid,
+} from "@/selectors/taskSelectors";
 
 function TaskBody({ toggle }: { toggle: boolean }) {
   const [selectedTask, setSelectedTask] = useState<string>("");
@@ -13,6 +17,7 @@ function TaskBody({ toggle }: { toggle: boolean }) {
   // Redux State
   const tasks = useSelector(getTasks);
   const taskListName = useSelector(getTaskListName);
+  const taskWithId = useSelector(getTaskWithid)(selectedTask);
 
   const toggleModal = (state: boolean) => {
     setOpenModal(state);
@@ -29,7 +34,7 @@ function TaskBody({ toggle }: { toggle: boolean }) {
         tasks={tasks}
         toggleModal={toggleModal}
         openModal={openModal}
-        selectedTask={selectedTask}
+        selectedTask={taskWithId}
         setSelectedTask={handleSelectedTask}
         toggle={toggle}
       />

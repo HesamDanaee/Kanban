@@ -53,12 +53,20 @@ const TaskWrapper = styled.div<{ theme: Theme }>`
   }
 `;
 
-const DescriptionTxt = styled.h2<{ theme: Theme; modal: boolean }>`
-  font-size: ${({ modal }) => (modal ? "20px" : "15px")};
+const TitleTxt = styled.h2<{ theme: Theme; modal: boolean }>`
+  font-size: ${({ modal }) => (modal ? "18px" : "15px")};
   font-weight: 600;
   transition: all 0.1s ease-in-out;
   margin-bottom: 0.4rem;
   color: ${({ theme }) => theme.colors["white"]};
+`;
+
+const DescriptionTxt = styled.h2<{ theme: Theme }>`
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.1s ease-in-out;
+  margin: 0.4rem 0;
+  color: ${({ theme }) => theme.bg["steel-blue"]};
 `;
 
 const Subtasktxt = styled.p<{ theme: Theme; modal: boolean }>`
@@ -183,6 +191,7 @@ export {
   TaskList,
   ListStatus,
   TaskWrapper,
+  TitleTxt,
   DescriptionTxt,
   Subtasktxt,
   Container,

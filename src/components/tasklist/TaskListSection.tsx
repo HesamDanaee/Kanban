@@ -7,6 +7,7 @@ import {
   TaskList,
   ListStatus,
   TaskWrapper,
+  TitleTxt,
   DescriptionTxt,
   Subtasktxt,
   Container,
@@ -26,13 +27,13 @@ import {
 import { Task } from "@/types/newTask.modal";
 
 // Selectors
-import { editSubTask } from "@/features/Tasks/Task/taskSlice";
+import { editSubTask, changeStatus } from "@/features/Tasks/taskSlice";
 
 interface TaskListSectionProps {
   taskListName: string[];
   tasks: Task[];
   toggleModal: (taskId: boolean) => void;
-  selectedTask: string;
+  selectedTask: Task;
   openModal: boolean;
   setSelectedTask: (id: string) => void;
   toggle: boolean;
@@ -71,7 +72,7 @@ function TaskListSection({
                 toggleModal(true);
               }}
             >
-              <DescriptionTxt modal={false} children={list.description} />
+              <TitleTxt modal={false} children={list.title} />
               <Subtasktxt
                 modal={false}
                 children={`${completeds.length} of ${subtasks.length} subtasks`}
@@ -95,69 +96,61 @@ function TaskListSection({
             e.stopPropagation();
           }}
         >
-          <DescriptionTxt
-            modal={true}
-            children={`${
-              tasks.filter((task) => task.id === selectedTask)[0]?.description
-            }`}
-          />
+          <TitleTxt children={selectedTask.title} modal={true} />
+          <DescriptionTxt children={`${selectedTask.description}`} />
 
           <WrapperTop>
             <Subtasktxt
               modal={true}
               children={`Subtasks ${
-                tasks
-                  .filter((task) => task.id === selectedTask)[0]
-                  .subtasks.filter((sub) => sub.completed === true).length
-              } of ${
-                tasks.filter((task) => task.id === selectedTask)[0].subtasks
+                selectedTask.subtasks.filter((sub) => sub.completed === true)
                   .length
-              }`}
+              } of ${selectedTask.subtasks.length}`}
             />
-            {tasks
-              .filter((task) => task.id === selectedTask)[0]
-              .subtasks.map((sub) => (
-                <SubtaskWrapper key={sub.id}>
-                  <CheckboxWrapper>
-                    <HiddenCheckbox
-                      key={sub.id}
-                      id={sub.id}
-                      onClick={() => {
-                        dispatch(
-                          editSubTask({
-                            taskId: tasks.filter(
-                              (task) => task.id === selectedTask
-                            )[0].id,
-                            subId: sub.id,
-                          })
-                        );
-                        const task = tasks.find(
-                          (t) =>
-                            t.id ===
-                            tasks.filter((task) => task.id === selectedTask)[0]
-                              .id
-                        );
-                        task && setSelectedTask(task.id);
-                      }}
-                    />
-                    <StyledCheckbox
-                      htmlFor={sub.id}
-                      completed={sub.completed}
-                    />
-                  </CheckboxWrapper>
-                  <Subtask
-                    children={sub.title}
-                    completed={sub.completed}
+            {selectedTask.subtasks.map((sub) => (
+              <SubtaskWrapper key={sub.id}>
+                <CheckboxWrapper>
+                  <HiddenCheckbox
                     key={sub.id}
+                    id={sub.id}
+                    onClick={() => {
+                      dispatch(
+                        editSubTask({
+                          taskId: tasks.filter(
+                            (task) => task.id === selectedTask.id
+                          )[0].id,
+                          subId: sub.id,
+                        })
+                      );
+                      const task = tasks.find((t) => t.id === selectedTask.id);
+                      task && setSelectedTask(task.id);
+                    }}
                   />
-                </SubtaskWrapper>
-              ))}
+                  <StyledCheckbox htmlFor={sub.id} completed={sub.completed} />
+                </CheckboxWrapper>
+                <Subtask
+                  children={sub.title}
+                  completed={sub.completed}
+                  key={sub.id}
+                />
+              </SubtaskWrapper>
+            ))}
           </WrapperTop>
           <SelectWrapper>
             <CurrentStatus children="current status" />
-            <StatusSelect>
+            <StatusSelect
+              onChange={(e) => {
+                console.log("working");
+                dispatch(
+                  changeStatus({
+                    taskId: selectedTask.id,
+                    status: e.target.value,
+                  })
+                );
+              }}
+            >
               {taskListName.map((name) => (
-                <StatusOption>
+                <StatusOption selected={selectedTask.stage === name}>
                   <OptionWrapper>{name}</OptionWrapper>
                 </StatusOption>
               ))}

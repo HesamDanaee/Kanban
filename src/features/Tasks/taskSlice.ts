@@ -141,13 +141,24 @@ const taskSlice = createSlice({
         }
         return task;
       });
-      console.log(
-        state.tasks.filter((task) => task.id === action.payload.taskId)[0]
-          .subtasks
-      );
+    },
+    changeStatus: (
+      state: TaskState,
+      action: PayloadAction<{ status: string; taskId: string }>
+    ) => {
+      state.tasks = state.tasks.map((task) => {
+        if (task.id === action.payload.taskId) {
+          return {
+            ...task,
+            stage: action.payload.status,
+          };
+        }
+        return task;
+      });
     },
   },
 });
 
-export const { addTask, editTask, editSubTask, deleteTask } = taskSlice.actions;
+export const { addTask, editTask, editSubTask, changeStatus, deleteTask } =
+  taskSlice.actions;
 export default taskSlice.reducer;
