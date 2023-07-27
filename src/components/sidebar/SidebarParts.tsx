@@ -3,7 +3,7 @@ import { Theme } from "@/styles/theme";
 
 const SidebarBody = styled.section<{
   theme: Theme;
-  left: string;
+  toogle: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -13,10 +13,12 @@ const SidebarBody = styled.section<{
   min-height: 90vh;
   height: 90vh;
   position: absolute;
-  left: ${({ left }) => left};
+  left: ${({ toogle }) => (!toogle ? "0" : "-261px")};
   bottom: 0;
-  padding: 2rem 0;
+  padding: 1rem 0;
   background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  z-index: 5;
+  transition: left 0.4s ease-in-out;
 `;
 
 const AllBoardsText = styled.h3<{ theme: Theme }>`
@@ -123,6 +125,59 @@ const ThemeLogo = styled.img`
   height: 20px;
 `;
 
+const ToggleButton = styled.div<{ theme: Theme; toggle: boolean }>`
+  width: ${({ toggle }) => (toggle ? "40px" : "calc(261px - 60px)")};
+  padding: 1rem 0;
+  max-height: 2.7rem;
+  border-radius: 0 100px 100px 0;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.bg["white"]};
+  justify-content: flex-start;
+  transition: all 0.4s ease;
+  transition-delay: ${({ toggle }) => (toggle ? "0.1s" : "0")};
+  transition-property: background-color, color, width, left;
+  color: white;
+  margin: 0.5rem 0;
+  position: absolute;
+  left: ${({ toggle }) => (toggle ? "100%" : "0")};
+  bottom: 0;
+  background-color: black;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.bg["white"]};
+    color: ${({ theme }) => theme.bg["purplish-blue"]};
+  }
+`;
+
+const ToggleIcon = styled.img<{ toggle: boolean }>`
+  width: 20px;
+  height: auto;
+  margin-left: 0.7rem;
+  margin-right: 1rem;
+`;
+
+const ToggleText = styled.h3`
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: capitalize;
+`;
+
+const WrapperUp = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const WrapperDown = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 80px;
+`;
+
 export {
   SidebarBody,
   Logo,
@@ -137,4 +192,9 @@ export {
   ThemeLogo,
   ThemeSwitch,
   AllBoardsText,
+  ToggleButton,
+  ToggleIcon,
+  ToggleText,
+  WrapperUp,
+  WrapperDown,
 };

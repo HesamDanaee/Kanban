@@ -18,6 +18,7 @@ const theme: Theme = {
     "dark-shade": " #2b2c37",
     "purplish-blue": " #635fc7",
     "steel-blue": " #828fa3",
+    "Lavender-Blue": "#a8a4ff",
   },
 };
 

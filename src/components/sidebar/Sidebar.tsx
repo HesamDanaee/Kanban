@@ -11,23 +11,36 @@ import {
   ThemeLogo,
   ThemeSwitch,
   AllBoardsText,
+  ToggleButton,
+  ToggleIcon,
+  ToggleText,
+  WrapperUp,
+  WrapperDown,
 } from "./SidebarParts";
 
 // Logos
 import boardIcon from "@/assets/icon-board.svg";
 import lightLogo from "@/assets/icon-light-theme.svg";
 import darkLogo from "@/assets/icon-dark-theme.svg";
+import hide from "@/assets/icon-hide-sidebar.svg";
+import show from "@/assets/icon-show-sidebar.svg";
 
 // Custom Hook
 
 import useThemeSwitch from "@/hooks/useThemeSwitch";
 
-function Sidebar() {
+function Sidebar({
+  toggle,
+  handleToggle,
+}: {
+  toggle: boolean;
+  handleToggle: () => void;
+}) {
   const { theme, handleSetTheme } = useThemeSwitch();
 
   return (
-    <SidebarBody left={`${0}`}>
-      <div>
+    <SidebarBody toogle={toggle}>
+      <WrapperUp>
         <AllBoardsText color="white" children={`All Boards ${1}`} />
         <List>
           <Listitem>
@@ -55,16 +68,22 @@ function Sidebar() {
             </Board>
           </Listitem>
         </List>
-      </div>
+      </WrapperUp>
+      <WrapperDown>
+        <ThemeBox>
+          <ThemeLogo src={lightLogo} />
+          <SwitchBox onClick={handleSetTheme}>
+            <SwitchCircle theme={theme} />
+            <ThemeSwitch type="checkbox" disabled />
+          </SwitchBox>
+          <ThemeLogo src={darkLogo} />
+        </ThemeBox>
+      </WrapperDown>
 
-      <ThemeBox>
-        <ThemeLogo src={lightLogo} />
-        <SwitchBox onClick={handleSetTheme}>
-          <SwitchCircle theme={theme} />
-          <ThemeSwitch type="checkbox" disabled />
-        </SwitchBox>
-        <ThemeLogo src={darkLogo} />
-      </ThemeBox>
+      <ToggleButton toggle={toggle} onClick={handleToggle}>
+        <ToggleIcon src={toggle ? show : hide} toggle={toggle} />
+        <ToggleText children={toggle ? "" : "hide sidebar"} />
+      </ToggleButton>
     </SidebarBody>
   );
 }
