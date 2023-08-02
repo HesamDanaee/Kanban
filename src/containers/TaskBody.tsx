@@ -9,6 +9,7 @@ import {
   getTaskListName,
   getTaskWithid,
 } from "@/selectors/taskSelectors";
+import { getSubTasks } from "@/selectors/subtaskSelectors";
 
 function TaskBody({ toggle }: { toggle: boolean }) {
   const [selectedTask, setSelectedTask] = useState<string>("");
@@ -16,6 +17,7 @@ function TaskBody({ toggle }: { toggle: boolean }) {
 
   // Redux State
   const tasks = useSelector(getTasks);
+  const subtasks = useSelector(getSubTasks);
   const taskListName = useSelector(getTaskListName);
   const taskWithId = useSelector(getTaskWithid)(selectedTask);
 
@@ -32,6 +34,7 @@ function TaskBody({ toggle }: { toggle: boolean }) {
       <TaskListSection
         taskListName={taskListName}
         tasks={tasks}
+        subtasks={subtasks}
         toggleModal={toggleModal}
         openModal={openModal}
         selectedTask={taskWithId}

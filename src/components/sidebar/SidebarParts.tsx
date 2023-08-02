@@ -12,7 +12,7 @@ const SidebarBody = styled.section<{
   width: 261px;
   min-height: 90vh;
   height: 90vh;
-  position: absolute;
+  position: fixed;
   left: ${({ toogle }) => (!toogle ? "0" : "-261px")};
   bottom: 0;
   padding: 1rem 0;

@@ -5,6 +5,9 @@ export interface Theme {
   bg: {
     [key: string]: string;
   };
+  status: {
+    [key: string]: string;
+  };
 }
 
 const theme: Theme = {
@@ -19,6 +22,11 @@ const theme: Theme = {
     "purplish-blue": " #635fc7",
     "steel-blue": " #828fa3",
     "Lavender-Blue": "#a8a4ff",
+  },
+  status: {
+    todo: "#5FC1DA",
+    doing: "#8374DE",
+    done: "#78C8AE",
   },
 };
 

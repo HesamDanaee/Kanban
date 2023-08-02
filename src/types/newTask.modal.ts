@@ -6,39 +6,19 @@ interface Tasks {
   };
 }
 
-interface subtask {
+interface SubtaskT {
   id: string;
   title: string;
   completed: boolean;
+  taskId: string;
 }
 
 interface Task {
   id: string;
   title: string;
   description: string;
-  subtasks: subtask[];
+
   stage: string;
-}
-
-interface TodoTask {
-  id: string;
-  title: string;
-  description: string;
-  subtasks: subtask[];
-}
-
-interface DoingTask {
-  id: string;
-  title: string;
-  description: string;
-  subtasks: subtask[];
-}
-
-interface DoneTask {
-  id: string;
-  title: string;
-  description: string;
-  subtasks: subtask[];
 }
 
 interface List {
@@ -47,4 +27,4 @@ interface List {
   list: Task[];
 }
 
-export type { Tasks, subtask, Task, List, TodoTask, DoingTask, DoneTask };
+export type { Tasks, SubtaskT, Task, List };

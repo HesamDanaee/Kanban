@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Theme } from "@/styles/theme";
 
 const HeaderBody = styled.header<{ theme: Theme }>`
-  width: 100vw;
+  min-width: 100vw;
   height: 10vh;
   display: flex;
   justify-content: space-between;
@@ -10,6 +10,9 @@ const HeaderBody = styled.header<{ theme: Theme }>`
   background-color: ${({ theme }) => theme.bg["dark-shade"]};
   z-index: 10;
   padding: 0.2rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 const Logo = styled.img`
@@ -37,6 +40,7 @@ const WrapperRIght = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 `;
 
 const NewTask = styled.button<{ theme: Theme }>`

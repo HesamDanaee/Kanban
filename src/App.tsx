@@ -16,7 +16,7 @@ import useToggleSidebar from "./hooks/useToggleSidebar";
 // Components
 import TaskBody from "@/containers/TaskBody";
 import Sidebar from "@/components/sidebar/Sidebar";
-import Header from "@/components/header/Header";
+import Header from "./containers/Header";
 
 function App() {
   const { toggle, handleToggle } = useToggleSidebar();
