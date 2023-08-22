@@ -8,6 +8,12 @@ export interface Theme {
   status: {
     [key: string]: string;
   };
+  light: {
+    [key: string]: string;
+  };
+  dark: {
+    [key: string]: string;
+  };
 }
 
 const theme: Theme = {
@@ -28,6 +34,9 @@ const theme: Theme = {
     doing: "#8374DE",
     done: "#78C8AE",
   },
+
+  light: {},
+  dark: {},
 };
 
 export default theme;

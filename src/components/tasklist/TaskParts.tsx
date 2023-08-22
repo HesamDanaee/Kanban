@@ -1,8 +1,10 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Theme } from "@/styles/theme";
+import check from "@/assets/icon-check.svg";
 
 const TaskSection = styled.section<{ theme: Theme; toggle: boolean }>`
-  height: calc(100vh - 10vh);
+  min-height: calc(100vh - 100px);
+  height: auto;
   min-width: 100vw;
   background-color: ${({ theme }) => theme.bg["blueish-black"]};
   position: absolute;
@@ -47,7 +49,21 @@ const ListStatus = styled.h1<{ theme: Theme }>`
   text-transform: capitalize;
 `;
 
-const ListStasusIcon = styled.span<{ status: string; theme: Theme }>`
+const bipAnimation = keyframes<{ status: string; theme: Theme }>`
+  0% {
+      transform: scale(.9);
+    
+  }
+
+   100% {
+    transform: scale(1);
+   }
+`;
+
+const ListStasusIcon = styled.span<{
+  status: string;
+  theme: Theme;
+}>`
   display: inline-block;
   margin-right: 0.5rem;
   width: 12px;
@@ -60,13 +76,16 @@ const ListStasusIcon = styled.span<{ status: string; theme: Theme }>`
       ? theme.status["doing"]
       : status === "done"
       ? theme.status["done"]
-      : ""};
+      : theme.bg["steel-blue"]};
+
+  animation: ${bipAnimation} 1s infinite alternate;
 `;
 
 //  Task Components
 
 const TaskList = styled.li`
   padding: 2rem 0.2rem;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,6 +121,7 @@ const TitleTxt = styled.h2<{ theme: Theme; modal: boolean }>`
   transition: all 0.1s ease-in-out;
   margin-bottom: 0.4rem;
   color: ${({ theme }) => theme.colors["white"]};
+  grid-column-start: 1;
 `;
 
 const DescriptionTxt = styled.h2<{ theme: Theme }>`
@@ -110,6 +130,7 @@ const DescriptionTxt = styled.h2<{ theme: Theme }>`
   transition: all 0.1s ease-in-out;
   margin: 0.4rem 0;
   color: ${({ theme }) => theme.bg["steel-blue"]};
+  grid-column-start: 1;
 `;
 
 const Subtasktxt = styled.p<{ theme: Theme; modal: boolean }>`
@@ -136,20 +157,25 @@ const Container = styled.div<{ theme: Theme }>`
   padding: 2rem;
 `;
 
-const ContainerBackspace = styled.div`
+const ContainerBackspace = styled.div<{ toggle: boolean }>`
+  display: ${({ toggle }) => (toggle ? "block" : "none")};
   width: 100%;
-  height: 100vh;
+  min-height: calc(100vh - 100px);
+  height: auto;
   background-color: #0000006a;
   position: absolute;
   left: 0;
-  top: 0;
+  bottom: 0;
   z-index: 15;
 `;
 
-const WrapperTop = styled.div`
+const WrapperTop = styled.div<{ subtask: boolean }>`
   width: 100%;
   padding: 1rem 0;
-  margin: 1rem auto;
+  margin: ${({ subtask }) => subtask && "1rem auto"};
+  display: grid;
+  grid-template-columns: ${({ subtask }) => !subtask && " 80% 20%"};
+  grid-template-rows: ${({ subtask }) => !subtask && "1fr 1fr"};
 `;
 
 //  Subtask, Checkbox
@@ -181,7 +207,13 @@ const StyledCheckbox = styled.label<{ theme: Theme; completed: boolean }>`
   border: 2px solid ${({ theme }) => theme.bg["purplish-blue"]};
   margin-right: 10px;
   border-radius: 0.2rem;
-  background-color: ${({ completed }) => completed && "white"};
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: ${({ theme, completed }) =>
+    completed && theme.bg["purplish-blue"]};
+  background-image: ${({ completed }) =>
+    completed ? `url(${check})` : "none"};
   &:hover {
     cursor: pointer;
   }
@@ -193,64 +225,6 @@ const Subtask = styled.h2<{ completed: boolean }>`
   text-transform: capitalize;
   font-weight: 600;
   text-decoration: ${({ completed }) => completed && "line-through"};
-`;
-
-//  Select Input
-
-const SelectWrapper = styled.div`
-  width: 100%;
-  padding: 1rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const CurrentStatus = styled.h2`
-  align-self: flex-start;
-  font-size: 12px;
-  color: white;
-  font-weight: 600;
-  text-transform: capitalize;
-`;
-
-const StatusSelect = styled.select<{ theme: Theme }>`
-  color: #fff;
-  width: 100%;
-  outline: none;
-  border: 1px solid #ffffff81;
-  background-color: transparent;
-  font-size: 14px;
-  text-transform: capitalize;
-  padding: 0.5rem;
-
-  margin-top: 0.5rem;
-  border-radius: 3px;
-  transition: border 0.1s ease;
-
-  &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
-  }
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const OptionWrapper = styled.span<{ theme: Theme }>`
-  padding: 2.5rem;
-  border: none;
-  outline: none;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
-`;
-
-const StatusOption = styled.option<{ theme: Theme }>`
-  padding: 0.5rem;
-  border: none;
-  outline: none;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const NewColumn = styled.article<{ theme: Theme }>`
@@ -299,12 +273,7 @@ export {
   CheckboxWrapper,
   HiddenCheckbox,
   StyledCheckbox,
-  SelectWrapper,
   Subtask,
-  CurrentStatus,
-  StatusSelect,
-  OptionWrapper,
-  StatusOption,
   NewColumn,
   NewColumnTxt,
 };

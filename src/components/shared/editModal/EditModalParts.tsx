@@ -1,12 +1,17 @@
 import styled from "styled-components";
 import { Theme } from "@/styles/theme";
 
-const EditModalWrapper = styled.div<{ theme: Theme; toggle: boolean }>`
+const EditModalWrapper = styled.div<{
+  theme: Theme;
+  toggle: boolean;
+  header: boolean;
+}>`
   width: 150px;
   height: auto;
   position: absolute;
-  left: 10%;
-  top: 160%;
+  left: ${({ header }) => header && "10%"};
+  right: ${({ header }) => !header && "10%"};
+  top: ${({ header }) => (header ? "160%" : "10%")};
   box-shadow: 0px 4px 6px 3px rgba(54, 78, 126, 0.205);
   background-color: ${({ theme }) => theme.bg["blueish-black"]};
   display: ${({ toggle }) => (toggle ? "block" : "none")};

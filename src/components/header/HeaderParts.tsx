@@ -3,7 +3,7 @@ import { Theme } from "@/styles/theme";
 
 const HeaderBody = styled.header<{ theme: Theme }>`
   min-width: 100vw;
-  height: 10vh;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,7 +46,7 @@ const WrapperRIght = styled.div`
 const NewTask = styled.button<{ theme: Theme }>`
   display: block;
   padding: 0.8rem 1.3rem;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: capitalize;
@@ -65,20 +65,4 @@ const NewTask = styled.button<{ theme: Theme }>`
   }
 `;
 
-const KebabMenu = styled.img`
-  width: 5px;
-  height: auto;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-export {
-  HeaderBody,
-  Logo,
-  BoardName,
-  WrapperLeft,
-  WrapperRIght,
-  NewTask,
-  KebabMenu,
-};
+export { HeaderBody, Logo, BoardName, WrapperLeft, WrapperRIght, NewTask };

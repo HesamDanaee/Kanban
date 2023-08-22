@@ -8,8 +8,17 @@
   font-family: "Plus Jakarta Sans";
 }
 
+body {
+  min-width: 100vw;
+  min-height: 100vh;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+
 body::-webkit-scrollbar {
   height: 8px;
+  background-color: #2b2c37;
 }
 
 body::-webkit-scrollbar-thumb {

@@ -1,5 +1,7 @@
 // Global Imports
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+
 // Local Imports
 
 import {
@@ -19,55 +21,85 @@ import {
   CheckboxWrapper,
   HiddenCheckbox,
   StyledCheckbox,
-  SelectWrapper,
   Subtask,
-  CurrentStatus,
-  OptionWrapper,
-  StatusSelect,
-  StatusOption,
   NewColumn,
   NewColumnTxt,
 } from "./TaskParts";
 
+import EditTaskModal from "../shared/create-editTaskModal/CETaskModal";
+
 //  Shared Components
 
-import { Task, SubtaskT } from "@/types/newTask.modal";
+import Status from "@/components/shared/Status/Status";
+import KebabMenu from "../shared/KebabMenu";
+import EditModal from "../shared/editModal/EditModal";
+import EditBoardModal from "../shared/editBoardModal/EditBoardModal";
+
+// Types
+
+import { TaskListSectionProps } from "@/types/props.modal";
 
 // Selectors
-import { changeStatus } from "@/features/Tasks/taskSlice";
-import { checkSubtask } from "@/features/subtasks/subtaskSlice";
 
-interface TaskListSectionProps {
-  taskListName: string[];
-  tasks: Task[];
-  subtasks: SubtaskT[];
-  toggleModal: (taskId: boolean) => void;
-  selectedTask: Task;
-  openModal: boolean;
-  setSelectedTask: (id: string) => void;
-  toggle: boolean;
-}
+import { checkSubtask } from "@/features/subtasks/subtaskSlice";
+import { getToggles } from "@/selectors/togglesSelector";
+import { getSelectedBoardId } from "@/selectors/boardSelectors";
+
+// Actions
+
+import {
+  toggleModal,
+  toggleEditBoard,
+  toggleTaskModal,
+  toggleEditTaskModal,
+  toggleCreateTaskModal,
+  toggleEditBoardModal,
+} from "@/features/toggles/toggleSlice";
+
+import { deleteTask, addColumn } from "@/features/Tasks/taskSlice";
+// Assets
+import kLogo from "@/assets/icon-vertical-ellipsis.svg";
+import { generateId } from "@/utils/helpers";
 
 function TaskListSection({
-  taskListName,
+  taskStageList,
   tasks,
   subtasks,
-  toggleModal,
   selectedTask,
-  openModal,
   setSelectedTask,
-  toggle,
 }: TaskListSectionProps) {
+  const {
+    taskModal,
+    editBoard,
+    sidebar,
+    editTaskModal,
+    createTaskModal,
+    editBoardModal,
+  } = useSelector(getToggles);
+  const boardId = useSelector(getSelectedBoardId);
   const dispatch = useDispatch();
+
+  const [showOptions, setShowOptions] = useState(false);
+  const handleShowOptions = (state: boolean) => {
+    setShowOptions(state);
+  };
+
+  // Filter the status and stages for each board
+  taskStageList = taskStageList.filter((stage) => stage.boardId === boardId);
   return (
     <TaskSection
+      toggle={sidebar}
       onClick={() => {
-        toggleModal(false);
+        dispatch(toggleTaskModal(false));
+        dispatch(toggleEditTaskModal(false));
+        dispatch(toggleCreateTaskModal(false));
+        dispatch(toggleEditBoardModal(false));
       }}
-      toggle={toggle}
     >
-      {taskListName.map((name) => {
-        const list = tasks.filter((list) => list.stage === name);
+      {taskStageList.map((stage) => {
+        const list = tasks.filter(
+          (list) => list.stage === stage.name && list.boardId === stage.boardId
+        );
 
         // Task Lists
         const mappedList = list.map((list) => {
@@ -75,11 +107,12 @@ function TaskListSection({
           const completeds = subtask.filter((sub) => sub.completed === true);
           return (
             <TaskWrapper
-              key={list.id}
+              key={generateId()}
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedTask(list.id);
-                toggleModal(true);
+                dispatch(toggleTaskModal(true));
+                dispatch(toggleModal());
               }}
             >
               <TitleTxt modal={false} children={list.title} />
@@ -92,33 +125,61 @@ function TaskListSection({
         });
 
         return (
-          <TaskList>
-            <StatusWrapper>
-              <ListStasusIcon status={name} />
-              <ListStatus children={`${name} (${list.length})`} />
-            </StatusWrapper>
-            {mappedList}
-          </TaskList>
+          <>
+            {stage.boardId === boardId && (
+              <TaskList>
+                <StatusWrapper>
+                  <ListStasusIcon status={stage.name} />
+                  <ListStatus children={`${stage.name} (${list.length})`} />
+                </StatusWrapper>
+                {mappedList}
+              </TaskList>
+            )}
+          </>
         );
       })}
       <NewColumn>
-        <NewColumnTxt children="+ new column" />
+        <NewColumnTxt
+          children="+ new column"
+          // onClick={() => dispatch(addColumn({ name: "feature", boardId }))}
+        />
       </NewColumn>
 
       {/*  Modal  */}
-      {openModal && (
+      {taskModal && selectedTask !== undefined && (
         <>
           {" "}
-          <ContainerBackspace />
           <Container
             onClick={(e) => {
               e.stopPropagation();
+              handleShowOptions(false);
             }}
           >
-            <TitleTxt children={selectedTask.title} modal={true} />
-            <DescriptionTxt children={`${selectedTask.description}`} />
+            <WrapperTop subtask={false}>
+              <TitleTxt children={selectedTask.title} modal={true} />
+              <DescriptionTxt children={`${selectedTask.description}`} />
+              <KebabMenu
+                onClick={() => dispatch(toggleEditBoard(!editBoard))}
+                src={kLogo}
+              />
+            </WrapperTop>
 
-            <WrapperTop>
+            <EditModal
+              toggle={editBoard}
+              header={false}
+              onEdit={() => {
+                dispatch(toggleEditBoard(false));
+                dispatch(toggleTaskModal(false));
+                dispatch(toggleEditTaskModal(true));
+              }}
+              onDelete={() => {
+                dispatch(toggleEditBoard(false));
+                dispatch(toggleTaskModal(false));
+                dispatch(deleteTask(selectedTask));
+              }}
+            />
+
+            <WrapperTop subtask={true}>
               <Subtasktxt
                 modal={true}
                 children={`Subtasks ${
@@ -162,28 +223,41 @@ function TaskListSection({
                   )
               )}
             </WrapperTop>
-            <SelectWrapper>
-              <CurrentStatus children="current status" />
-              <StatusSelect
-                onChange={(e) => {
-                  dispatch(
-                    changeStatus({
-                      taskId: selectedTask.id,
-                      status: e.target.value,
-                    })
-                  );
-                }}
-              >
-                {taskListName.map((name) => (
-                  <StatusOption selected={selectedTask.stage === name}>
-                    <OptionWrapper>{name}</OptionWrapper>
-                  </StatusOption>
-                ))}
-              </StatusSelect>
-            </SelectWrapper>
+            <Status
+              toggleStatus={showOptions}
+              handleToggleStatus={handleShowOptions}
+              listName={taskStageList}
+              stage={selectedTask.stage}
+              taskId={selectedTask.id}
+            />
           </Container>
         </>
       )}
+      {(editTaskModal || createTaskModal) && (
+        <EditTaskModal
+          usage={editTaskModal ? "edit" : "create"}
+          boardId={boardId}
+          listName={taskStageList}
+          stage={!createTaskModal ? selectedTask?.stage : ""}
+          taskId={!createTaskModal ? selectedTask?.id : ""}
+          toggle={editTaskModal}
+        />
+      )}
+
+      {editBoardModal && (
+        <EditBoardModal
+          boardId={boardId}
+          toggle={editBoardModal}
+          usage="edit"
+          key={generateId()}
+        />
+      )}
+      <ContainerBackspace
+        // onClick={() => {
+        //   dispatch(toggleModal());
+        // }}
+        toggle={taskModal || editTaskModal || createTaskModal || editBoardModal}
+      />
     </TaskSection>
   );
 }

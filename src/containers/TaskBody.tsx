@@ -1,47 +1,52 @@
-import TaskListSection from "@/components/tasklist/TaskListSection";
 // Global Imports
+
 import { useState } from "react";
 import { useSelector } from "react-redux";
+
+//  Local Imports
+
+import TaskListSection from "@/components/tasklist/TaskListSection";
+
 // Redux Actions
 
 import {
   getTasks,
-  getTaskListName,
+  getTaskStageList,
   getTaskWithid,
 } from "@/selectors/taskSelectors";
-import { getSubTasks } from "@/selectors/subtaskSelectors";
 
-function TaskBody({ toggle }: { toggle: boolean }) {
+// Redux Selectors
+import { getSubTasks } from "@/selectors/subtaskSelectors";
+import { getSelectedBoardId } from "@/selectors/boardSelectors";
+
+// Custom Hooks
+
+function TaskBody() {
   const [selectedTask, setSelectedTask] = useState<string>("");
-  const [openModal, setOpenModal] = useState(false);
 
   // Redux State
-  const tasks = useSelector(getTasks);
+  const selectedBoard = useSelector(getSelectedBoardId);
+  const tasks = useSelector(getTasks).filter(
+    (task) => task.boardId === selectedBoard
+  );
   const subtasks = useSelector(getSubTasks);
-  const taskListName = useSelector(getTaskListName);
+  const taskListName = useSelector(getTaskStageList).filter(
+    (stage) => stage.name
+  );
   const taskWithId = useSelector(getTaskWithid)(selectedTask);
-
-  const toggleModal = (state: boolean) => {
-    setOpenModal(state);
-  };
 
   const handleSelectedTask = (id: string) => {
     setSelectedTask(id);
   };
 
   return (
-    <>
-      <TaskListSection
-        taskListName={taskListName}
-        tasks={tasks}
-        subtasks={subtasks}
-        toggleModal={toggleModal}
-        openModal={openModal}
-        selectedTask={taskWithId}
-        setSelectedTask={handleSelectedTask}
-        toggle={toggle}
-      />
-    </>
+    <TaskListSection
+      taskStageList={taskListName}
+      tasks={tasks}
+      subtasks={subtasks}
+      selectedTask={taskWithId}
+      setSelectedTask={handleSelectedTask}
+    />
   );
 }
 

@@ -1,15 +1,9 @@
 import HeaderUI from "@/components/header/HeaderUI";
-import { useState } from "react";
+
+// Logic
 
 function Header() {
-  const [toggle, setToggle] = useState(false);
-  const handleToggleModal = (state: boolean) => {
-    setToggle(state);
-  };
-
-  return (
-    <HeaderUI toggleModal={toggle} handleToggleModal={handleToggleModal} />
-  );
+  return <HeaderUI />;
 }
 
 export default Header;
