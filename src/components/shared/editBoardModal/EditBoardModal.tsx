@@ -76,6 +76,13 @@ function EditBoardModal({
 
   // Handlers
 
+  const handleAddColumn = () => {
+    setTempColumns((prev) => [
+      ...prev,
+      { name: "", id: generateId(), boardId },
+    ]);
+  };
+
   const handleColumnChange = (index: number, value: string) => {
     const updatedColumns = [...tempColumns];
     updatedColumns[index] = {
@@ -96,9 +103,16 @@ function EditBoardModal({
     const newBoardId = generateId();
 
     title !== "" && dispatch(changeBoard({ ...board, name: title }));
+
+    // Remove Columns
     removedColumns.map((sub) => {
       dispatch(deleteColumn(sub.id));
-      tasks.map((task) => task.stage);
+      tasks.map(
+        (task) =>
+          task.boardId === sub.boardId &&
+          task.stage === sub.name &&
+          dispatch(deleteTask(task))
+      );
     });
     tempColumns.map((col) => {
       if (stages.find((col2) => col2.id === col.id) !== undefined) {
@@ -160,7 +174,7 @@ function EditBoardModal({
       </Wrapper>
       <CreateBoardButton
         children="+ add new column"
-        // onClick={handleAddSubtask}
+        onClick={handleAddColumn}
       />
       <SaveChangesBUtton children="save changes" onClick={handleSave} />
     </Modal>

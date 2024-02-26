@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
 
 const SelectWrapper = styled.div`
   width: 100%;
@@ -10,15 +9,15 @@ const SelectWrapper = styled.div`
   flex-direction: column;
 `;
 
-const CurrentStatus = styled.h2`
+const CurrentStatus = styled.h2<{ theme: Color }>`
   align-self: flex-start;
   font-size: 12px;
-  color: white;
+  color: ${({ theme }) => theme.accent};
   font-weight: 600;
   text-transform: capitalize;
 `;
 
-const StatusSelect = styled.select<{ theme: Theme }>`
+const StatusSelect = styled.select<{ theme: Color }>`
   color: #fff;
   width: 100%;
   outline: none;
@@ -33,23 +32,23 @@ const StatusSelect = styled.select<{ theme: Theme }>`
   transition: border 0.1s ease;
 
   &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
+    border: 1px solid ${({ theme }) => theme.primary};
   }
 `;
 
-const OptionWrapper = styled.span<{ theme: Theme }>`
+const OptionWrapper = styled.span<{ theme: Color }>`
   padding: 2.5rem;
   border: none;
   outline: none;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
 `;
 
-const StatusOption = styled.option<{ theme: Theme }>`
+const StatusOption = styled.option<{ theme: Color }>`
   padding: 0.5rem;
   border: none;
   outline: none;
 
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
 `;
 
 export {

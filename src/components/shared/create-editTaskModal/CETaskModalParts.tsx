@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
 import cross from "@/assets/icon-cross.svg";
 
-const Modal = styled.div<{ theme: Theme; toggle: boolean }>`
+const Modal = styled.div<{ theme: Color; toggle: boolean }>`
   width: 450px;
   height: auto;
   padding: 20px 30px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
   display: ${({ toggle }) => (toggle ? "block" : "none")};
   position: fixed;
   left: 50%;
@@ -20,8 +19,8 @@ const Modal = styled.div<{ theme: Theme; toggle: boolean }>`
   z-index: 20;
 `;
 
-const EditTask = styled.h1`
-  color: white;
+const EditTask = styled.h1<{ theme: Color }>`
+  color: ${({ theme }) => theme.accent};
   font-size: 1.2rem;
   letter-spacing: 1px;
   line-height: 3rem;
@@ -29,7 +28,7 @@ const EditTask = styled.h1`
   align-self: self-start;
 `;
 
-const Wrapper = styled.div<{ subtaskWrapper?: boolean; theme: Theme }>`
+const Wrapper = styled.div<{ subtaskWrapper?: boolean; theme: Color }>`
   width: 100%;
   max-height: ${({ subtaskWrapper }) => subtaskWrapper && "150px"};
   margin: 1rem 0;
@@ -41,11 +40,11 @@ const Wrapper = styled.div<{ subtaskWrapper?: boolean; theme: Theme }>`
 
   &::-webkit-scrollbar {
     width: 5px;
-    background-color: ${({ theme }) => theme.bg["blueish-black"]};
+    background-color: ${({ theme }) => theme.primary};
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.bg["purplish-blue"]};
+    background-color: ${({ theme }) => theme.secondary};
     border-radius: 5px;
   }
 `;
@@ -80,7 +79,7 @@ const InputWrapper = styled.span<{ warning: boolean }>`
 
 const TaskNameInput = styled.input.attrs({
   type: "text",
-})<{ theme: Theme; warning: boolean }>`
+})<{ theme: Color; warning: boolean }>`
   position: relative;
   border-radius: 3px;
   padding: 8px 7px;
@@ -95,7 +94,7 @@ const TaskNameInput = styled.input.attrs({
     cursor: pointer;
   }
   &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
+    border: 1px solid ${({ theme }) => theme.third};
     cursor: text;
   }
   &::placeholder {
@@ -111,12 +110,12 @@ const TaskNameTxt = styled.h3`
   text-transform: capitalize;
 `;
 
-const DescriptionInput = styled.textarea<{ theme: Theme }>`
+const DescriptionInput = styled.textarea<{ theme: Color }>`
   max-width: 100%;
   min-width: 100%;
   height: 100px;
   max-height: 200px;
-  color: ${({ theme }) => theme.colors["steel-blue"]};
+  color: ${({ theme }) => theme.primary};
   background: none;
   border-radius: 3px;
   outline: none;
@@ -132,7 +131,7 @@ const DescriptionInput = styled.textarea<{ theme: Theme }>`
     cursor: pointer;
   }
   &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
+    border: 1px solid ${({ theme }) => theme.third};
     cursor: text;
   }
   &::placeholder {
@@ -142,14 +141,14 @@ const DescriptionInput = styled.textarea<{ theme: Theme }>`
 
 const DescriptionTxt = styled(TaskNameTxt)``;
 
-const CreateSubtaskButton = styled.button<{ theme: Theme }>`
+const CreateSubtaskButton = styled.button<{ theme: Color }>`
   width: 100%;
   padding: 10px;
-  color: ${({ theme }) => theme.bg["purplish-blue"]};
+  color: ${({ theme }) => theme.third};
   background-image: linear-gradient(
     to right,
     white 50%,
-    ${({ theme }) => theme.bg["purplish-blue"]} 50%
+    ${({ theme }) => theme.third} 50%
   );
   background-size: 200% 100%;
   outline: none;
@@ -159,49 +158,48 @@ const CreateSubtaskButton = styled.button<{ theme: Theme }>`
   letter-spacing: 1px;
   border-radius: 25px;
   margin: 10px 0;
-
   box-shadow: 0 0 4px 2px #00000018;
   transition: all 0.5s ease-in-out;
 
   &:hover {
     cursor: pointer;
     background-size: 200% 100%;
-    color: white;
+    color: ${({ theme }) => theme.accent};
     box-shadow: none;
     background-position: -100% 0;
   }
 `;
 
-const EditTaskButton = styled(CreateSubtaskButton)`
-  color: white;
+const EditTaskButton = styled(CreateSubtaskButton)<{ theme: Color }>`
+  color: ${({ theme }) => theme.accent};
   background-image: linear-gradient(
     to right,
-    ${({ theme }) => theme.bg["purplish-blue"]} 50%,
+    ${({ theme }) => theme.third} 50%,
     white 50%
   );
   &:hover {
-    color: ${({ theme }) => theme.bg["purplish-blue"]};
+    color: ${({ theme }) => theme.third};
   }
 `;
 
 const SubtaskInput = styled.input.attrs({
   type: "text",
   placeholder: "enter your subtask",
-})<{ theme: Theme }>`
+})<{ theme: Color }>`
   width: 80%;
   outline: none;
   border: 1px solid #ffffff36;
   border-radius: 3px;
   background-color: transparent;
   padding: 10px;
-  color: white;
+  color: ${({ theme }) => theme.accent};
   margin: 4px 0;
   font-weight: 300;
   &:hover {
     cursor: pointer;
   }
   &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
+    border: 1px solid ${({ theme }) => theme.third};
     cursor: text;
   }
   &::placeholder {
@@ -217,9 +215,9 @@ const DeleteSubtaskButton = styled.img.attrs({ src: cross })`
   }
 `;
 
-const NoSubError = styled.h6<{ theme: Theme }>`
+const NoSubError = styled.h6<{ theme: Color }>`
   font-size: 12px;
-  color: ${({ theme }) => theme.bg["steel-blue"]};
+  color: ${({ theme }) => theme.third};
   font-weight: 500;
   text-align: center;
   line-height: 80px;

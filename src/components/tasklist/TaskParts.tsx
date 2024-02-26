@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
-import { Theme } from "@/styles/theme";
+import { memo } from "react";
 import check from "@/assets/icon-check.svg";
 
-const TaskSection = styled.section<{ theme: Theme; toggle: boolean }>`
+const TaskSection = styled.section<{ theme: Color; toggle: boolean }>`
   min-height: calc(100vh - 100px);
   height: auto;
   min-width: 100vw;
-  background-color: ${({ theme }) => theme.bg["blueish-black"]};
+  background-color: ${({ theme }) => theme.primary};
   position: absolute;
   left: ${({ toggle }) => (toggle ? "0" : "261px")};
   bottom: 0;
@@ -23,11 +23,11 @@ const TaskSection = styled.section<{ theme: Theme; toggle: boolean }>`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.bg["steel-blue"]};
+    background-color: ${({ theme }) => theme.primary};
     border-radius: 25px;
 
     &:hover {
-      background-color: ${({ theme }) => theme.bg["purplish-blue"]};
+      background-color: ${({ theme }) => theme.primary};
       cursor: pointer;
     }
   }
@@ -42,14 +42,14 @@ const StatusWrapper = styled.div`
   align-items: center;
 `;
 
-const ListStatus = styled.h1<{ theme: Theme }>`
-  color: ${({ theme }) => theme.bg["steel-blue"]};
+const ListStatus = styled.h1<{ theme: Color }>`
+  color: ${({ theme }) => theme.accent};
   font-size: 12px;
   letter-spacing: 2.4px;
   text-transform: capitalize;
 `;
 
-const bipAnimation = keyframes<{ status: string; theme: Theme }>`
+const bipAnimation = keyframes<{ status: string }>`
   0% {
       transform: scale(.9);
     
@@ -62,7 +62,7 @@ const bipAnimation = keyframes<{ status: string; theme: Theme }>`
 
 const ListStasusIcon = styled.span<{
   status: string;
-  theme: Theme;
+  theme: Color;
 }>`
   display: inline-block;
   margin-right: 0.5rem;
@@ -71,30 +71,30 @@ const ListStasusIcon = styled.span<{
   border-radius: 50%;
   background-color: ${({ status, theme }) =>
     status === "todo"
-      ? theme.status["todo"]
+      ? theme.status.todo
       : status === "doing"
-      ? theme.status["doing"]
+      ? theme.status.doing
       : status === "done"
-      ? theme.status["done"]
-      : theme.bg["steel-blue"]};
+      ? theme.status.done
+      : theme.third};
 
   animation: ${bipAnimation} 1s infinite alternate;
 `;
 
 //  Task Components
-
 const TaskList = styled.li`
   padding: 2rem 0.2rem;
   min-width: 280px;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const TaskWrapper = styled.div<{ theme: Theme }>`
+const TaskWrapper = styled.div<{ theme: Color }>`
   width: 280px;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -108,43 +108,43 @@ const TaskWrapper = styled.div<{ theme: Theme }>`
     box-shadow: rgba(54, 78, 126, 0.219) 0px 4px 6px 0px;
 
     > h2 {
-      color: ${({ theme }) => theme.colors["purplish-blue"]};
+      color: ${({ theme }) => theme.fifth};
     }
   }
 `;
 
 // Heading and P
 
-const TitleTxt = styled.h2<{ theme: Theme; modal: boolean }>`
+const TitleTxt = styled.h2<{ theme: Color; modal: boolean }>`
   font-size: ${({ modal }) => (modal ? "18px" : "15px")};
   font-weight: 600;
   transition: all 0.1s ease-in-out;
   margin-bottom: 0.4rem;
-  color: ${({ theme }) => theme.colors["white"]};
+  color: ${({ theme }) => theme.accent};
   grid-column-start: 1;
 `;
 
-const DescriptionTxt = styled.h2<{ theme: Theme }>`
+const DescriptionTxt = styled.h2<{ theme: Color }>`
   font-size: 13px;
   font-weight: 600;
   transition: all 0.1s ease-in-out;
   margin: 0.4rem 0;
-  color: ${({ theme }) => theme.bg["steel-blue"]};
+  color: ${({ theme }) => theme.forth};
   grid-column-start: 1;
 `;
 
-const Subtasktxt = styled.p<{ theme: Theme; modal: boolean }>`
+const Subtasktxt = styled.p<{ theme: Color; modal: boolean }>`
   font-size: ${({ modal }) => (modal ? "13px" : "12px")};
-  color: ${({ theme }) => theme.bg["steel-blue"]};
+  color: ${({ theme }) => theme.third};
   font-weight: ${({ modal }) => (modal ? "600" : "600")};
   margin: ${({ modal }) => !modal && " 0.2rem 0"};
 `;
 
 //  Modal
 
-const Container = styled.div<{ theme: Theme }>`
+const Container = styled.div<{ theme: Color }>`
   width: 480px;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
   position: fixed;
   left: 50%;
   top: 50%;
@@ -169,19 +169,19 @@ const ContainerBackspace = styled.div<{ toggle: boolean }>`
   z-index: 15;
 `;
 
-const WrapperTop = styled.div<{ subtask: boolean }>`
+const WrapperTop = memo(styled.div<{ subtask: boolean }>`
   width: 100%;
   padding: 1rem 0;
   margin: ${({ subtask }) => subtask && "1rem auto"};
   display: grid;
   grid-template-columns: ${({ subtask }) => !subtask && " 80% 20%"};
   grid-template-rows: ${({ subtask }) => !subtask && "1fr 1fr"};
-`;
+`);
 
 //  Subtask, Checkbox
 
-const SubtaskWrapper = styled.div<{ theme: Theme }>`
-  background-color: ${({ theme }) => theme.bg["blueish-black"]};
+const SubtaskWrapper = styled.div<{ theme: Color }>`
+  background-color: ${({ theme }) => theme.primary};
   padding: 0.5rem;
   border-radius: 0.2rem;
   display: flex;
@@ -193,41 +193,40 @@ const CheckboxWrapper = styled.div`
   position: relative;
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
+const HiddenCheckbox = memo(styled.input.attrs({ type: "checkbox" })`
   position: absolute;
   opacity: 0;
   height: 0;
   width: 0;
-`;
+`);
 
-const StyledCheckbox = styled.label<{ theme: Theme; completed: boolean }>`
+const StyledCheckbox = memo(styled.label<{ theme: Color; completed: boolean }>`
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 2px solid ${({ theme }) => theme.bg["purplish-blue"]};
+  border: 2px solid ${({ theme }) => theme.third};
   margin-right: 10px;
   border-radius: 0.2rem;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  background-color: ${({ theme, completed }) =>
-    completed && theme.bg["purplish-blue"]};
+  background-color: ${({ theme, completed }) => completed && theme.third};
   background-image: ${({ completed }) =>
     completed ? `url(${check})` : "none"};
   &:hover {
     cursor: pointer;
   }
-`;
+`);
 
-const Subtask = styled.h2<{ completed: boolean }>`
+const Subtask = styled.h2<{ theme: Color; completed: boolean }>`
   font-size: 13px;
-  color: white;
+  color: ${({ theme }) => theme.accent};
   text-transform: capitalize;
   font-weight: 600;
   text-decoration: ${({ completed }) => completed && "line-through"};
 `;
 
-const NewColumn = styled.article<{ theme: Theme }>`
+const NewColumn = styled.article<{ theme: Color }>`
   width: 280px;
   height: 80vh;
   margin-top: 64px;
@@ -241,9 +240,9 @@ const NewColumn = styled.article<{ theme: Theme }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ theme }) => theme.bg["steel-blue"]};
+  color: ${({ theme }) => theme.accent};
   &:hover {
-    color: ${({ theme }) => theme.colors["purplish-blue"]};
+    color: ${({ theme }) => theme.third};
     cursor: pointer;
   }
 `;

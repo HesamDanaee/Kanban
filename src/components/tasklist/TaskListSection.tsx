@@ -37,7 +37,7 @@ import EditBoardModal from "../shared/editBoardModal/EditBoardModal";
 
 // Types
 
-import { TaskListSectionProps } from "@/types/props.modal";
+import { TaskListSectionProps } from "@/types/props";
 
 // Selectors
 
@@ -56,10 +56,11 @@ import {
   toggleEditBoardModal,
 } from "@/features/toggles/toggleSlice";
 
-import { deleteTask, addColumn } from "@/features/Tasks/taskSlice";
+import { deleteTask, changeStatus } from "@/features/Tasks/taskSlice";
 // Assets
 import kLogo from "@/assets/icon-vertical-ellipsis.svg";
 import { generateId } from "@/utils/helpers";
+import theme from "@/styles/theme";
 
 function TaskListSection({
   taskStageList,
@@ -68,6 +69,11 @@ function TaskListSection({
   selectedTask,
   setSelectedTask,
 }: TaskListSectionProps) {
+  //  Drag & Drop Hook
+  // const { items, draggedItem, handleDragStart, handleDrop } =
+  //   useDragAndDrop(tasks);
+
+  // Redux State
   const {
     taskModal,
     editBoard,
@@ -76,6 +82,7 @@ function TaskListSection({
     createTaskModal,
     editBoardModal,
   } = useSelector(getToggles);
+
   const boardId = useSelector(getSelectedBoardId);
   const dispatch = useDispatch();
 
@@ -114,6 +121,10 @@ function TaskListSection({
                 dispatch(toggleTaskModal(true));
                 dispatch(toggleModal());
               }}
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData("text/plain", list.id);
+              }}
             >
               <TitleTxt modal={false} children={list.title} />
               <Subtasktxt
@@ -127,7 +138,14 @@ function TaskListSection({
         return (
           <>
             {stage.boardId === boardId && (
-              <TaskList>
+              <TaskList
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const taskId = e.dataTransfer.getData("text/plain");
+                  dispatch(changeStatus({ status: stage.name, taskId }));
+                }}
+                onDragOver={(e) => e.preventDefault()}
+              >
                 <StatusWrapper>
                   <ListStasusIcon status={stage.name} />
                   <ListStatus children={`${stage.name} (${list.length})`} />
@@ -146,7 +164,7 @@ function TaskListSection({
       </NewColumn>
 
       {/*  Modal  */}
-      {taskModal && selectedTask !== undefined && (
+      {taskModal && selectedTask && (
         <>
           {" "}
           <Container
@@ -212,6 +230,7 @@ function TaskListSection({
                         <StyledCheckbox
                           htmlFor={sub.id}
                           completed={sub.completed}
+                          theme={theme}
                         />
                       </CheckboxWrapper>
                       <Subtask

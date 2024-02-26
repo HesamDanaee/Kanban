@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { generateId } from "@/utils/helpers";
-import { SubtaskT } from "@/types/newTask.modal";
+import { SubtaskT } from "@/types/newTask";
 
 interface SubtaskState {
   subtasks: SubtaskT[];

@@ -1,42 +1,31 @@
-export interface Theme {
-  colors: {
-    [key: string]: string;
-  };
-  bg: {
-    [key: string]: string;
-  };
-  status: {
-    [key: string]: string;
-  };
-  light: {
-    [key: string]: string;
-  };
-  dark: {
-    [key: string]: string;
-  };
-}
-
 const theme: Theme = {
-  colors: {
-    white: "#ffffff",
-    "purplish-blue": " #635fc7",
-  },
-  bg: {
-    white: "#ffffff",
-    "blueish-black": " #20212c",
-    "dark-shade": " #2b2c37",
-    "purplish-blue": " #635fc7",
-    "steel-blue": " #828fa3",
-    "Lavender-Blue": "#a8a4ff",
-  },
-  status: {
-    todo: "#5FC1DA",
-    doing: "#8374DE",
-    done: "#78C8AE",
+  dark: {
+    accent: "#ffffff",
+    "primary": " #20212c",
+    "secondary": " #2b2c37",
+    "third": " #635fc7",
+    "forth": " #828fa3",
+    "fifth": "#a8a4ff",
+    status: {
+      todo: "#5FC1DA",
+      doing: "#8374DE",
+      done: "#78C8AE",
+    },
   },
 
-  light: {},
-  dark: {},
+  light: {
+    accent: "#000000",
+    "primary": " #dbe2ef",
+    "secondary": " #f2f3f7",
+    "third": " #e0f2ff",
+    "forth": " #e5e9f2",
+    "fifth": "#a8a4ff",
+    status: {
+      todo: "#5FC1DA",
+      doing: "#8374DE",
+      done: "#78C8AE",
+    },
+  },
 };
 
 export default theme;

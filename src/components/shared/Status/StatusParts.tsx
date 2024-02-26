@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
+
 //  Select Input
 
 const SelectWrapper = styled.div`
@@ -19,7 +19,7 @@ const CurrentStatus = styled.h2`
   text-transform: capitalize;
 `;
 
-const StatusSelect = styled.div<{ theme: Theme }>`
+const StatusSelect = styled.div<{ theme: Color }>`
   position: relative;
   color: #fff;
   width: 100%;
@@ -33,14 +33,14 @@ const StatusSelect = styled.div<{ theme: Theme }>`
   border-radius: 3px;
   transition: border 0.1s ease;
   &:focus {
-    border: 1px solid ${({ theme }) => theme.bg["purplish-blue"]};
+    border: 1px solid ${({ theme }) => theme.secondary};
   }
   &:hover {
     cursor: pointer;
   }
 `;
 
-const StatusOption = styled.div<{ theme: Theme; firstLast?: boolean }>`
+const StatusOption = styled.div<{ theme: Color; firstLast?: boolean }>`
   display: inline-block;
   width: 100%;
   height: auto;
@@ -54,17 +54,17 @@ const StatusOption = styled.div<{ theme: Theme; firstLast?: boolean }>`
     cursor: pointer;
     border-top: ${({ firstLast }) => firstLast && "1px solid white"};
     border-bottom: ${({ firstLast }) => firstLast && "1px solid white"};
-    background-color: ${({ theme }) => theme.bg["steel-blue"]};
+    background-color: ${({ theme }) => theme.secondary};
   }
 `;
 
-const OptionWrapper = styled.div<{ theme: Theme }>`
+const OptionWrapper = styled.div<{ theme: Color }>`
   width: 100%;
   height: auto;
   position: absolute;
   top: 110%;
   left: 0;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.primary};
   border-radius: 5px;
   border: 1px solid white;
 `;

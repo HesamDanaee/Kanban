@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
 
-const HeaderBody = styled.header<{ theme: Theme }>`
+const HeaderBody = styled.header<{ theme: Color }>`
   min-width: 100vw;
   height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
   z-index: 10;
   padding: 0.2rem 2rem;
   position: fixed;
@@ -43,7 +42,7 @@ const WrapperRIght = styled.div`
   position: relative;
 `;
 
-const NewTask = styled.button<{ theme: Theme }>`
+const NewTask = styled.button<{ theme: Color }>`
   display: block;
   padding: 0.8rem 1.3rem;
   font-size: 12px;
@@ -56,11 +55,11 @@ const NewTask = styled.button<{ theme: Theme }>`
   outline: none;
   transition: all 0.1s ease-in-out;
   transition-property: background-color, color;
-  background-color: ${({ theme }) => theme.bg["purplish-blue"]};
+  background-color: ${({ theme }) => theme.third};
 
   &:hover {
-    background-color: ${({ theme }) => theme.bg["Lavender-Blue"]};
-    color: ${({ theme }) => theme.bg["dark-shade"]};
+    background-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.primary};
     cursor: pointer;
   }
 `;

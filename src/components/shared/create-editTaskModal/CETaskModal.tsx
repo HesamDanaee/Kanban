@@ -43,7 +43,7 @@ import {
 
 // Types
 
-import { SubtaskT } from "@/types/newTask.modal";
+import { SubtaskT } from "@/types/newTask";
 import { generateId } from "@/utils/helpers";
 import { Stage } from "@/features/Tasks/taskSlice";
 

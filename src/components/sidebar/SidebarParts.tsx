@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
 
 const SidebarBody = styled.section<{
-  theme: Theme;
+  theme: Color;
   toogle: boolean;
 }>`
   display: flex;
@@ -16,18 +15,18 @@ const SidebarBody = styled.section<{
   left: ${({ toogle }) => (!toogle ? "0" : "-261px")};
   bottom: 0;
   padding: 1rem 0;
-  background-color: ${({ theme }) => theme.bg["dark-shade"]};
+  background-color: ${({ theme }) => theme.secondary};
   z-index: 5;
   transition: left 0.4s ease-in-out;
 `;
 
-const AllBoardsText = styled.h3<{ theme: Theme }>`
+const AllBoardsText = styled.h3<{ theme: Color }>`
   font-size: 12px;
   letter-spacing: 3px;
   padding-left: 1.5rem;
   text-transform: uppercase;
   font-weight: 600;
-  color: ${({ theme }) => theme.colors["white"]};
+  color: ${({ theme }) => theme.accent};
 `;
 
 const Logo = styled.div<{ url: string }>`
@@ -46,26 +45,25 @@ const Listitem = styled.li`
   padding: 1px 0;
 `;
 
-const Board = styled.div<{ theme: Theme; selected?: boolean }>`
+const Board = styled.div<{ theme: Color; selected?: boolean }>`
   width: calc(261px - 20px);
-  background-color: ${({ theme, selected }) =>
-    selected && theme.bg["purplish-blue"]};
+  background-color: ${({ theme, selected }) => selected && theme.third};
   padding: 1rem 0;
   border-radius: 0 100px 100px 0;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.bg["white"]};
+  color: ${({ theme }) => theme.accent};
   justify-content: flex-start;
   transition: all 0.4s ease;
   transition-property: background-color, color;
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg["white"]};
-    color: ${({ theme }) => theme.bg["purplish-blue"]};
+    background-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.primary};
   }
 `;
 
-const BoardText = styled.h2<{ theme: Theme }>`
+const BoardText = styled.h2<{ theme: Color }>`
   font-size: 15px;
   font-weight: medium;
   letter-spacing: 1px;
@@ -79,10 +77,10 @@ const BoardIcon = styled.img`
   margin: 0 1.4rem;
 `;
 
-const ThemeBox = styled.div<{ theme: Theme }>`
+const ThemeBox = styled.div<{ theme: Color }>`
   width: calc(261px - 20%);
   padding: 0.5rem0 1.5rem;
-  background-color: ${({ theme }) => theme.bg["blueish-black"]};
+  background-color: ${({ theme }) => theme.primary};
   align-self: center;
   padding: 0.8rem 1rem;
   display: flex;
@@ -91,10 +89,10 @@ const ThemeBox = styled.div<{ theme: Theme }>`
   border-radius: 10px;
 `;
 
-const SwitchBox = styled.label<{ theme: Theme }>`
+const SwitchBox = styled.label<{ theme: Color }>`
   position: relative;
   display: inline-block;
-  background-color: ${({ theme }) => theme.bg["purplish-blue"]};
+  background-color: ${({ theme }) => theme.secondary};
   width: 50px;
   border-radius: 100px;
   padding: 0.1rem 0;
@@ -125,14 +123,14 @@ const ThemeLogo = styled.img`
   height: 20px;
 `;
 
-const ToggleButton = styled.div<{ theme: Theme; toggle: boolean }>`
+const ToggleButton = styled.div<{ theme: Color; toggle: boolean }>`
   width: ${({ toggle }) => (toggle ? "40px" : "calc(261px - 60px)")};
   padding: 1rem 0;
   max-height: 2.7rem;
   border-radius: 0 100px 100px 0;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.bg["white"]};
+  color: ${({ theme }) => theme.primary};
   justify-content: flex-start;
   transition: all 0.4s ease;
   transition-delay: ${({ toggle }) => (toggle ? "0.1s" : "0")};
@@ -145,8 +143,8 @@ const ToggleButton = styled.div<{ theme: Theme; toggle: boolean }>`
   background-color: black;
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg["white"]};
-    color: ${({ theme }) => theme.bg["purplish-blue"]};
+    background-color: ${({ theme }) => theme.secondary};
+    color: ${({ theme }) => theme.forth};
   }
 `;
 

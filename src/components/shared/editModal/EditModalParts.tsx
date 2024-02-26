@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { Theme } from "@/styles/theme";
 
 const EditModalWrapper = styled.div<{
-  theme: Theme;
+  theme: Color;
   toggle: boolean;
   header: boolean;
 }>`
@@ -13,13 +12,13 @@ const EditModalWrapper = styled.div<{
   right: ${({ header }) => !header && "10%"};
   top: ${({ header }) => (header ? "160%" : "10%")};
   box-shadow: 0px 4px 6px 3px rgba(54, 78, 126, 0.205);
-  background-color: ${({ theme }) => theme.bg["blueish-black"]};
+  background-color: ${({ theme }) => theme.primary};
   display: ${({ toggle }) => (toggle ? "block" : "none")};
   z-index: 100;
   border-radius: 5px;
 `;
 
-const EditModalOption = styled.div<{ theme: Theme; usage?: string }>`
+const EditModalOption = styled.div<{ theme: Color; usage?: string }>`
   font-size: 14px;
   text-transform: capitalize;
   color: ${({ usage }) => (usage === "edit" ? "white" : "red")};
@@ -27,7 +26,7 @@ const EditModalOption = styled.div<{ theme: Theme; usage?: string }>`
   transition: background-color 0.1s ease-in-out;
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.bg["dark-shade"]};
+    background-color: ${({ theme }) => theme.secondary};
   }
 `;
 
